@@ -18,11 +18,11 @@ define getvalkyrie::ssh_keys (
 
   # Set a default path to store keys, but allow overrides.
   if $key_path {$real_keypath = $key_path}
-  else { $real_keypath = "/tmp/packer/ssh_keys/${name}_${key_tag}"}
+  else { $real_keypath = "/tmp/ssh_keys/${name}_${key_tag}"}
 
   # Generate a strong keypair and save it to a mounted volume.
   exec {'ssh-keygen':
-    command => "/usr/bin/ssh-keygen -y -t rsa -b 4096 -N '' -C '${name}_${key_tag}' -f ${real_keypath}",
+    command => "/usr/bin/ssh-keygen -t rsa -b 4096 -N '' -C '${name}_${key_tag}' -f ${real_keypath}",
     user    => $user,
     creates => [ "${real_keypath}", "${real_keypath}.pub" ],
   }
