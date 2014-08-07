@@ -1,8 +1,15 @@
-# defined type: getvalkyrie::ssh_keys
+# class: getvalkyrie::ssh_keys
+#
+# Generate an SSH keypair. $image_name and $image_tag are set as facts.
+class getvalkyrie::ssh_keys {
+  getvalkyrie::ssh_key { $::image_name : key_tag => $::image_tag }
+}
+
+# defined type: getvalkyrie::ssh_key
 #
 # Generates an SSH keypair, saved to a mounted volume, that can then be used to
 # securely connect to the container.
-define getvalkyrie::ssh_keys (
+define getvalkyrie::ssh_key (
   $key_tag,
   $user = 'root',
   $home = '/root',
