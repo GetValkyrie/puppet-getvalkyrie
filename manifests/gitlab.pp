@@ -3,6 +3,7 @@
 # Install and configure gitlab.
 class getvalkyrie::gitlab {
 
+  # We should move this to trocla, or something.
   $gitlab_dbname = 'gitlab_db'
   $gitlab_dbpwd = 'gitlab_dbpwd'
   $gitlab_dbuser = 'gitlab_dbuser'
@@ -11,6 +12,7 @@ class getvalkyrie::gitlab {
     '::gitlab':
       git_user            => 'git',
       git_home            => '/home/git',
+      gitlab_repodir      => '/home/git/repos'
       git_email           => 'chris@ergonlogic.com',
       git_comment         => 'GitLab',
       gitlab_sources      => 'https://github.com/gitlabhq/gitlabhq.git',
@@ -18,16 +20,24 @@ class getvalkyrie::gitlab {
       gitlab_domain       => 'localhost',
       #gitlab_domain       => 'git.getvalkyrie.com',
       gitlab_http_timeout => '300',
-      gitlab_dbtype       => 'mysql',
+      # BACKUPS: Keep full backups for 30 days
       gitlab_backup       => true,
+      gitlab_backup_path  => 'backups',
+      gitlab_backup_keep_time => '2592000',
+      # DATABASE: Move to Postgresql
       gitlab_dbname       => $gitlab_dbname,
       gitlab_dbuser       => $gitlab_dbuser,
       gitlab_dbpwd        => $gitlab_dbpwd,
       ldap_enabled        => false,
-      #gitlab_relative_url_root => '/gitlab',
+      gitlab_dbtype       => 'mysql',
       #gitlab_dbtype     => 'pgsql',
       #require           => Postgresql::Server::Db[$gitlab_dbname],
   }
+
+# export and mount db data volume
+# mount git data volume
+# mount gitlab backups volume (on s3 w/ s3fs?)
+
 
   $unicorn_path = '/opt/unicorn.sh'
   file { $unicorn_path :

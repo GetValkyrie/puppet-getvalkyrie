@@ -1,10 +1,10 @@
 # class: getvalkyrie::gitlab::packages
 #
 # Install and configure gitlab pre-requisites.
+#
+# N.B. To shorten the development cycle, we build a (local) base image with all
+# required packages pre-installed.
 class getvalkyrie::gitlab_packages {
-
-  # To shorten the development cycle, we build a (local) base image with all
-  # required packages pre-installed.
 
   exec { 'initial update':
     command   => '/usr/bin/apt-get update',

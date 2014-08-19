@@ -1,11 +1,23 @@
 # class: getvalkyrie::gitlab_base
 #
 # Install and configure the requirements for gitlab.
+#
+# N.B. This class assume that getvalkyrie::gitlab_packages has already run to
+# install basic packages.
 class getvalkyrie::gitlab_base {
 
-  #include getvalkyrie::gitlab_packages
-  #include git
-  #include logrotate
+  include logrotate
+
+  user { 'git':
+    # The gitlab user (git) needs to be able to write to the postdrop directory
+    # in order to send emails.
+    groups => 'postdrop',
+  }
+  supervisor::service { 'postfix':
+    ensure       => 'running',
+    directory    => '/etc/postfix',
+    command      => '/usr/sbin/postfix -c /etc/postfix start',
+  }
 
   class { 'redis':
     service_enable  => false,
@@ -19,7 +31,6 @@ class getvalkyrie::gitlab_base {
   supervisor::service { 'redis-server':
     ensure  => 'running',
     command => '/usr/bin/redis-server /etc/redis/redis.conf',
-#    before  => Class['::gitlab'],
   }
 
   class { 'mysql::server':
@@ -38,19 +49,6 @@ class getvalkyrie::gitlab_base {
     ensure  => 'running',
     command => '/usr/sbin/mysqld',
     require => Mysql::Db[$gitlab_dbname],
-#    before  => Class['::gitlab'],
   }
-/*
-  anchor { 'gitlab_requirements::begin': }
-  anchor { 'gitlab_requirements::end': }
 
-  Anchor['gitlab_requirements::begin'] ->
-  Class['logrotate'] ->
-  Class['git'] ->
-  Mysql::Db[$gitlab_dbname] ->
-  Supervisor::Service['mysqld']->
-  Supervisor::Service['redis-server']->
-  Anchor['gitlab_requirements::end']
-*/
 }
-
