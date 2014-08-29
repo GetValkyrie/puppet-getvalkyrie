@@ -15,6 +15,9 @@ class getvalkyrie::gitlab_base {
   }
   supervisor::service { 'postfix':
     ensure       => 'running',
+    process_name => 'master',
+    autorestart  => false,
+    startsecs    => 0,
     directory    => '/etc/postfix',
     command      => '/usr/sbin/postfix -c /etc/postfix start',
   }
