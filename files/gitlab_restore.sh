@@ -15,9 +15,13 @@ if [ -e /home/git/repositories ]; then
   mkdir /home/git/repositories.$CURRENT_TIME
   mv /home/git/repositories/* /home/git/repositories.$CURRENT_TIME/
 fi
+
 # Copy our cached data into place.
 cp $GITLAB_BACKUP_PATH/mysql/* /var/lib/mysql/ -r
 if [ -e $GITLAB_BACKUP_PATH/git ]; then
   cp $GITLAB_BACKUP_PATH/git/* /home/git/repositories/ -r
 fi
 
+# Ensure correct ownership
+chown mysql:mysql /var/lib/mysql -R
+chown git:git /home/git/repositories -R
