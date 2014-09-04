@@ -13,12 +13,13 @@ class getvalkyrie::gitlab {
       git_user            => 'git',
       git_home            => '/home/git',
       gitlab_repodir      => '/home/git/repos',
-      git_email           => 'chris@ergonlogic.com',
+      git_email           => 'gitlab@poeticsystems.com',
       git_comment         => 'GitLab',
       gitlab_sources      => 'https://github.com/gitlabhq/gitlabhq.git',
       #gitlab_branch       => '7-1-stable',
-      gitlab_domain       => 'localhost',
+      #gitlab_domain       => 'localhost',
       #gitlab_domain       => 'git.getvalkyrie.com',
+      gitlab_domain       => 'git.poeticsystems.com',
       gitlab_http_timeout => '300',
       # BACKUPS: Keep full backups for 30 days
       gitlab_backup       => true,
@@ -34,10 +35,7 @@ class getvalkyrie::gitlab {
       #require           => Postgresql::Server::Db[$gitlab_dbname],
   }
 
-# export and mount db data volume
-# mount git data volume
 # mount gitlab backups volume (on s3 w/ s3fs?)
-
 
   $unicorn_path = '/opt/unicorn.sh'
   file { $unicorn_path :
