@@ -12,7 +12,8 @@ class getvalkyrie::gitlab {
     '::gitlab':
       git_user            => 'git',
       git_home            => '/home/git',
-      gitlab_repodir      => '/home/git/repos',
+      #gitlab_repodir      => '/home/git/repositories',
+      gitlab_repodir      => '/home/git',
       git_email           => 'gitlab@poeticsystems.com',
       git_comment         => 'GitLab',
       gitlab_sources      => 'https://github.com/gitlabhq/gitlabhq.git',

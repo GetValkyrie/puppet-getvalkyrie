@@ -23,7 +23,7 @@ fi
 
 # Copy live data to our data cache.
 cp /var/lib/mysql $GITLAB_BACKUP_PATH/mysql -r
-if [ -e /home/git/repositories ]; then
-  cp /home/git/repositories $GITLAB_BACKUP_PATH/git -r
+if [ -e /home/git/repos ]; then
+  cp /home/git/repos $GITLAB_BACKUP_PATH/git -r
 fi
 
